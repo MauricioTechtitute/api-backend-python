@@ -17,12 +17,12 @@ def root():
     }
 
 # ⛔ ESTE ENDPOINT NO SE BORRA TODAVÍA
-@app.get("/courses")
-def get_courses():
-    return [
-        {"id": 1, "name": "Python Básico"},
-        {"id": 2, "name": "API REST con FastAPI"}
-    ]
+# @app.get("/courses")
+# def get_courses():
+#     return [
+#         {"id": 1, "name": "Python Básico"},
+#         {"id": 2, "name": "API REST con FastAPI"}
+#     ]
 
 
 

@@ -4,8 +4,7 @@ def get_all_courses() -> list[Course]:
     """
     Devuelve la lista de cursos.
     Por ahora es una lista fija (simula una base de datos).
-    """
-    """
+
     Devuelve la lista de cursos.
     Por ahora es una lista fija.
     Más adelante aquí irá la base de datos.
