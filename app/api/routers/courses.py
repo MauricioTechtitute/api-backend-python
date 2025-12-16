@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from app.api.schemas import Course
+from app.services.courses_service import get_all_courses
 
 router = APIRouter(
     prefix="/courses",
@@ -8,12 +9,11 @@ router = APIRouter(
 
 @router.get("/", response_model=list[Course])
 def get_courses():
-    return [
-        {"id": 1, "name": "Python Básico"},
-        {"id": 2, "name": "API REST con FastAPI"}
-    ]
-
-
+    return get_all_courses()
+    # return [
+    #     {"id": 1, "name": "Python Básico"},
+    #     {"id": 2, "name": "API REST con FastAPI"}
+    # ]
 
 
 
