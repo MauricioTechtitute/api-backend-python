@@ -15,11 +15,6 @@ def read_courses():
 
 @router.post("/", response_model=Course, status_code=201)
 def create_course(course: CourseCreate):
-    if not course.name.strip():
-        raise HTTPException(
-            status_code=400,
-            detail="Course name is required"
-        )
 
     return add_course(course.name)
 
