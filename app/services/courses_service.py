@@ -49,6 +49,50 @@ def add_course(name: str):
     return repo.add(name)
 
 
+def reset_courses():
+    """
+    Resetea el estado de cursos.
+    Uso exclusivo para tests.
+    """
+    _courses.clear()
+    _courses.extend([
+        {"id": 1, "name": "Python Básico"},
+        {"id": 2, "name": "API REST con FastAPI"},
+    ])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # # app/services/courses_service.py
 
 # # Simulación de base de datos en memoria
