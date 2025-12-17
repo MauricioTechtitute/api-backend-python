@@ -61,8 +61,13 @@ def reset_courses():
     ])
 
 
+def delete_course(course_id: int) -> None:
+    for course in _courses:
+        if course["id"] == course_id:
+            _courses.remove(course)
+            return
 
-
+    raise ValueError("Course not found")
 
 
 
