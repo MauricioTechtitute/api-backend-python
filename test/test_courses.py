@@ -1,8 +1,22 @@
 from fastapi.testclient import TestClient
 from app.main import app
 
+
+import pytest
+from app.services import courses_service
+
+
 client = TestClient(app)
 
+# 🔽 🔽 🔽 AQUÍ VA EL FIXTURE 🔽 🔽 🔽
+@pytest.fixture(autouse=True)
+def reset_courses():
+    courses_service._courses.clear()
+    courses_service._courses.extend([
+        {"id": 1, "name": "Python Básico"},
+        {"id": 2, "name": "API REST con FastAPI"},
+    ])
+# 🔼 🔼 🔼 FIN DEL FIXTURE 🔼 🔼 🔼
 
 def test_get_courses_returns_list():
     response = client.get("/courses/")
