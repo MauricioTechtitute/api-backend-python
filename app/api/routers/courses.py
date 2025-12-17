@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from app.api.schemas import Course, CourseCreate
 from app.services.courses_service import get_courses, add_course
 
@@ -10,18 +10,132 @@ router = APIRouter(
 
 @router.get("/", response_model=list[Course])
 def read_courses():
-    """
-    Obtiene la lista de cursos.
-    """
     return get_courses()
 
 
 @router.post("/", response_model=Course, status_code=201)
 def create_course(course: CourseCreate):
-    """
-    Crea un nuevo curso.
-    """
+    if not course.name.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Course name is required"
+        )
+
     return add_course(course.name)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from fastapi import APIRouter, HTTPException
+# from app.api.schemas import Course, CourseCreate
+# from app.services.courses_service import get_courses, add_course
+
+
+# router = APIRouter(
+#     prefix="/courses",
+#     tags=["courses"]
+# )
+
+
+# @router.get("/", response_model=list[Course])
+# def read_courses():
+#     """
+#     Obtiene la lista de cursos.
+#     """
+#     return get_courses()
+
+
+# @router.post("/", response_model=Course, status_code=201)
+# def create_course(course: CourseCreate):
+#     """
+#     Crea un nuevo curso.
+#     """
+
+#     if not course.name.strip():
+#         raise HTTPException(
+#             status_code=400,
+#             detail="Course name is required"
+#         )
+
+#     return add_course(course.name)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from fastapi import APIRouter
+# from app.api.schemas import Course, CourseCreate
+# from app.services.courses_service import get_courses, add_course
+
+# router = APIRouter(
+#     prefix="/courses",
+#     tags=["courses"]
+# )
+
+
+# @router.get("/", response_model=list[Course])
+# def read_courses():
+#     """
+#     Obtiene la lista de cursos.
+#     """
+#     return get_courses()
+
+
+# @router.post("/", response_model=Course, status_code=201)
+# def create_course(course: CourseCreate):
+#     """
+#     Crea un nuevo curso.
+#     """
+#     return add_course(course.name)
 
 
 
