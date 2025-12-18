@@ -1,6 +1,13 @@
 from fastapi import APIRouter, HTTPException
 from app.api.schemas import Course, CourseCreate
-from app.services.courses_service import get_courses, add_course
+# from app.services.courses_service import get_courses, add_course
+
+from app.services.courses_service import (
+    get_courses,
+    add_course,
+    delete_course,
+    update_course,
+)
 
 router = APIRouter(
     prefix="/courses",
@@ -19,8 +26,16 @@ def create_course(course: CourseCreate):
     return add_course(course.name)
 
 
-
-
+@router.put("/{course_id}", response_model=Course)
+def update_course_endpoint(course_id: int, course: CourseCreate):
+    try:
+        return update_course(course_id, course.name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    # except KeyError as e:
+    #     raise HTTPException(status_code=404, detail=str(e))
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Course not found")
 
 
 

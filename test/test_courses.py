@@ -78,3 +78,66 @@ def test_create_course_with_duplicate_name_returns_400():
     assert response2.status_code == 400
     assert response2.json()["detail"] == "Course already exists"
 
+
+def test_update_course_returns_updated_course():
+    # crear curso
+    payload = {"name": "Curso original"}
+    create_response = client.post("/courses/", json=payload)
+    assert create_response.status_code == 201
+
+    course_id = create_response.json()["id"]
+
+    # actualizar curso
+    update_payload = {"name": "Curso actualizado"}
+    update_response = client.put(f"/courses/{course_id}", json=update_payload)
+
+    assert update_response.status_code == 200
+
+    data = update_response.json()
+    assert data["id"] == course_id
+    assert data["name"] == "Curso actualizado"
+
+
+def test_update_course_with_empty_name_returns_400():
+    payload = {"name": "Curso válido"}
+    create_response = client.post("/courses/", json=payload)
+    assert create_response.status_code == 201
+
+    course_id = create_response.json()["id"]
+
+    update_payload = {"name": "   "}
+    update_response = client.put(f"/courses/{course_id}", json=update_payload)
+
+    assert update_response.status_code == 400
+    assert update_response.json()["detail"] == "Course name is required"
+
+
+
+def test_update_nonexistent_course_returns_404():
+    update_payload = {"name": "Curso inexistente"}
+
+    response = client.put("/courses/9999", json=update_payload)
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Course not found"
+
+
+
+def test_update_course_with_duplicate_name_returns_400():
+    response1 = client.post("/courses/", json={"name": "Curso A"})
+    response2 = client.post("/courses/", json={"name": "Curso B"})
+
+    assert response1.status_code == 201
+    assert response2.status_code == 201
+
+    course_b_id = response2.json()["id"]
+
+    update_payload = {"name": "Curso A"}
+    update_response = client.put(f"/courses/{course_b_id}", json=update_payload)
+
+    assert update_response.status_code == 400
+    assert update_response.json()["detail"] == "Course already exists"
+
+
+
+
