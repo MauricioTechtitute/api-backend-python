@@ -78,3 +78,21 @@ def test_create_course_with_duplicate_name_returns_400():
     assert response2.status_code == 400
     assert response2.json()["detail"] == "Course already exists"
 
+
+def test_delete_course_returns_204():
+    # crear curso
+    payload = {"name": "Curso a eliminar"}
+    create_response = client.post("/courses/", json=payload)
+    assert create_response.status_code == 201
+
+    course_id = create_response.json()["id"]
+
+    # eliminar curso
+    delete_response = client.delete(f"/courses/{course_id}")
+    assert delete_response.status_code == 204
+
+
+def test_delete_nonexistent_course_returns_404():
+    response = client.delete("/courses/9999")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Course not found"
