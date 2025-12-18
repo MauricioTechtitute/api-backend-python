@@ -79,6 +79,8 @@ def test_create_course_with_duplicate_name_returns_400():
     assert response2.json()["detail"] == "Course already exists"
 
 
+
+
 def test_update_course_returns_updated_course():
     # crear curso
     payload = {"name": "Curso original"}
@@ -141,3 +143,63 @@ def test_update_course_with_duplicate_name_returns_400():
 
 
 
+def test_patch_course_updates_name():
+    response = client.post("/courses/", json={"name": "Curso Original"})
+    course_id = response.json()["id"]
+
+    patch_response = client.patch(
+        f"/courses/{course_id}",
+        json={"name": "Curso Actualizado"}
+    )
+
+    assert patch_response.status_code == 200
+    assert patch_response.json()["name"] == "Curso Actualizado"
+
+
+def test_patch_course_with_empty_name_returns_400():
+    response = client.post("/courses/", json={"name": "Curso Válido"})
+    course_id = response.json()["id"]
+
+    patch_response = client.patch(
+        f"/courses/{course_id}",
+        json={"name": "   "}
+    )
+
+    assert patch_response.status_code == 400
+    assert patch_response.json()["detail"] == "Course name is required"
+
+
+def test_patch_course_with_duplicate_name_returns_400():
+    client.post("/courses/", json={"name": "Curso A"})
+    response_b = client.post("/courses/", json={"name": "Curso B"})
+    course_b_id = response_b.json()["id"]
+
+    patch_response = client.patch(
+        f"/courses/{course_b_id}",
+        json={"name": "Curso A"}
+    )
+
+    assert patch_response.status_code == 400
+    assert patch_response.json()["detail"] == "Course already exists"
+
+
+def test_patch_nonexistent_course_returns_404():
+    patch_response = client.patch(
+        "/courses/9999",
+        json={"name": "Curso Inexistente"}
+    )
+
+    assert patch_response.status_code == 404
+    assert patch_response.json()["detail"] == "Course not found"
+
+
+def test_patch_course_with_empty_payload_returns_400():
+    response = client.post("/courses/", json={"name": "Curso Válido"})
+    course_id = response.json()["id"]
+
+    patch_response = client.patch(
+        f"/courses/{course_id}",
+        json={}
+    )
+
+    assert patch_response.status_code == 400
