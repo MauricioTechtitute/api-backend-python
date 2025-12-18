@@ -7,6 +7,7 @@ from app.services.courses_service import (
     add_course,
     delete_course,
     update_course,
+    patch_course,
 )
 
 router = APIRouter(
@@ -26,6 +27,7 @@ def create_course(course: CourseCreate):
     return add_course(course.name)
 
 
+
 @router.put("/{course_id}", response_model=Course)
 def update_course_endpoint(course_id: int, course: CourseCreate):
     try:
@@ -37,6 +39,16 @@ def update_course_endpoint(course_id: int, course: CourseCreate):
     except KeyError:
         raise HTTPException(status_code=404, detail="Course not found")
 
+
+
+@router.patch("/{course_id}", response_model=Course)
+def patch_course_endpoint(course_id: int, payload: dict):
+    try:
+        return patch_course(course_id, payload)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except LookupError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 

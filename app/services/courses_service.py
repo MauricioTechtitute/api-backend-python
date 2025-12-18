@@ -89,6 +89,29 @@ def delete_course(course_id: int):
 
 
 
+def patch_course(course_id: int, data: dict):
+    if not data:
+        raise ValueError("Empty payload")
+
+    course = next((c for c in _courses if c["id"] == course_id), None)
+    if not course:
+        raise LookupError("Course not found")
+
+    if "name" in data:
+        name = data["name"].strip()
+
+        if not name:
+            raise ValueError("Course name is required")
+
+        if any(c["name"] == name and c["id"] != course_id for c in _courses):
+            raise ValueError("Course already exists")
+
+        course["name"] = name
+
+    return course
+
+
+
 
 
 
