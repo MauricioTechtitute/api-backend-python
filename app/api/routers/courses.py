@@ -24,14 +24,17 @@ def read_courses():
 @router.post("/", response_model=Course, status_code=201)
 def create_course(course: CourseCreate):
 
-    return add_course(course.name)
+    # return add_course(course.name)
+    return add_course(course.name, course.description)
+
 
 
 
 @router.put("/{course_id}", response_model=Course)
 def update_course_endpoint(course_id: int, course: CourseCreate):
     try:
-        return update_course(course_id, course.name)
+        # return update_course(course_id, course.name)
+        return update_course(course_id, course.name, course.description)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     # except KeyError as e:
@@ -43,7 +46,9 @@ def update_course_endpoint(course_id: int, course: CourseCreate):
 
 @router.patch("/{course_id}", response_model=Course)
 def patch_course_endpoint(course_id: int, payload: dict):
+# def patch_course_endpoint(course_id: int, payload: CoursePatch):
     try:
+        # return patch_course(course_id,  payload.model_dump(exclude_unset=True))
         return patch_course(course_id, payload)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -26,7 +26,6 @@ def test_get_courses_returns_list():
     assert isinstance(response.json(), list)
 
 
-
 def test_get_courses_returns_valid_course_structure():
     response = client.get("/courses/")
     assert response.status_code == 200
@@ -203,3 +202,124 @@ def test_patch_course_with_empty_payload_returns_400():
     )
 
     assert patch_response.status_code == 400
+
+
+
+def test_create_course_with_description():
+    response = client.post(
+        "/courses/",
+        json={
+            "name": "Curso con descripción",
+            "description": "Texto descriptivo"
+        }
+    )
+
+    assert response.status_code == 201
+    data = response.json()
+    assert data["description"] == "Texto descriptivo"
+
+
+def test_create_course_without_description():
+    response = client.post(
+        "/courses/",
+        json={"name": "Curso sin descripción"}
+    )
+
+    assert response.status_code == 201
+    assert "description" in response.json()
+
+
+def test_put_updates_description():
+    create = client.post(
+        "/courses/",
+        json={"name": "Curso", "description": "Inicial"}
+    )
+
+    course_id = create.json()["id"]
+
+    update = client.put(
+        f"/courses/{course_id}",
+        json={"name": "Curso", "description": "Actualizada"}
+    )
+
+    assert update.status_code == 200
+    assert update.json()["description"] == "Actualizada"
+
+
+
+def test_patch_updates_description_only():
+    create = client.post(
+        "/courses/",
+        json={"name": "Curso", "description": "Inicial"}
+    )
+
+    course_id = create.json()["id"]
+
+    patch = client.patch(
+        f"/courses/{course_id}",
+        json={"description": "Nueva descripción"}
+    )
+
+    assert patch.status_code == 200
+    assert patch.json()["name"] == "Curso"
+    assert patch.json()["description"] == "Nueva descripción"
+
+
+
+def test_create_course_with_description():
+    response = client.post(
+        "/courses/",
+        json={
+            "name": "Curso con descripción",
+            "description": "Texto descriptivo"
+        }
+    )
+
+    assert response.status_code == 201
+    data = response.json()
+    assert data["description"] == "Texto descriptivo"
+
+
+def test_create_course_without_description():
+    response = client.post(
+        "/courses/",
+        json={"name": "Curso sin descripción"}
+    )
+
+    assert response.status_code == 201
+    assert "description" in response.json()
+
+
+def test_put_updates_description():
+    create = client.post(
+        "/courses/",
+        json={"name": "Curso", "description": "Inicial"}
+    )
+
+    course_id = create.json()["id"]
+
+    update = client.put(
+        f"/courses/{course_id}",
+        json={"name": "Curso", "description": "Actualizada"}
+    )
+
+    assert update.status_code == 200
+    assert update.json()["description"] == "Actualizada"
+
+
+def test_patch_updates_description_only():
+    create = client.post(
+        "/courses/",
+        json={"name": "Curso", "description": "Inicial"}
+    )
+
+    course_id = create.json()["id"]
+
+    patch = client.patch(
+        f"/courses/{course_id}",
+        json={"description": "Nueva descripción"}
+    )
+
+    assert patch.status_code == 200
+    assert patch.json()["name"] == "Curso"
+    assert patch.json()["description"] == "Nueva descripción"

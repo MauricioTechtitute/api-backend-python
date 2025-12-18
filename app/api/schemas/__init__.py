@@ -1,6 +1,6 @@
 from .course import Course, CourseCreate
 
-__all__ = ["Course", "CourseCreate"]
+__all__ = ["Course", "CourseCreate", "CoursePatch"]
 
 
 
