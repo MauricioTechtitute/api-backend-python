@@ -61,7 +61,31 @@ def reset_courses():
     ])
 
 
+def update_course(course_id: int, name: str):
+    if not name or not name.strip():
+        raise ValueError("Course name is required")
 
+    # verificar duplicado (otro curso)
+    for course in _courses:
+        if course["name"].lower() == name.lower() and course["id"] != course_id:
+            raise ValueError("Course already exists")
+
+    # buscar curso
+    for course in _courses:
+        if course["id"] == course_id:
+            course["name"] = name
+            return course
+
+    raise KeyError("Course not found")
+
+
+def delete_course(course_id: int):
+    for course in _courses:
+        if course["id"] == course_id:
+            _courses.remove(course)
+            return
+
+    raise KeyError("Course not found")
 
 
 
