@@ -122,6 +122,10 @@ class CourseRepository:
 
 # 🔹 API pública usada por routers y tests
 repo = CourseRepository()
+# from app.dependencies.course_repository import get_course_repository
+
+# repo = get_course_repository()
+
 
 def get_courses():
     return repo.get_all()
