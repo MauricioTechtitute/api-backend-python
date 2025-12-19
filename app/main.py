@@ -1,10 +1,16 @@
 from fastapi import FastAPI
+
 from app.api.routers import health_router, courses_router
+from app.db.init_db import init_db
 
 app = FastAPI(
     title="API Backend Python",
     version="1.0.0"
 )
+
+@app.on_event("startup")
+def startup_event():
+    init_db()
 
 app.include_router(health_router)
 app.include_router(courses_router)
@@ -15,6 +21,62 @@ def root():
         "service": "API Backend Python",
         "status": "running"
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from fastapi import FastAPI
+# from app.api.routers import health_router, courses_router
+
+# from app.db.init_db import init_db
+
+# init_db()
+
+# from fastapi import FastAPI
+# from app.db.init_db import init_db
+
+# app = FastAPI()
+
+# @app.on_event("startup")
+# def startup_event():
+#     init_db()
+
+
+# app = FastAPI(
+#     title="API Backend Python",
+#     version="1.0.0"
+# )
+
+# app.include_router(health_router)
+# app.include_router(courses_router)
+
+# @app.get("/")
+# def root():
+#     return {
+#         "service": "API Backend Python",
+#         "status": "running"
+#     }
 
 
 
