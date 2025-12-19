@@ -1,16 +1,20 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.api.routers import health_router, courses_router
 from app.db.init_db import init_db
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+    # aquí iría shutdown si existiera
+
 app = FastAPI(
     title="API Backend Python",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
-
-@app.on_event("startup")
-def startup_event():
-    init_db()
 
 app.include_router(health_router)
 app.include_router(courses_router)
@@ -21,6 +25,44 @@ def root():
         "service": "API Backend Python",
         "status": "running"
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from fastapi import FastAPI
+
+# from app.api.routers import health_router, courses_router
+# from app.db.init_db import init_db
+
+# app = FastAPI(
+#     title="API Backend Python",
+#     version="1.0.0"
+# )
+
+# @app.on_event("startup")
+# def startup_event():
+#     init_db()
+
+# app.include_router(health_router)
+# app.include_router(courses_router)
+
+# @app.get("/")
+# def root():
+#     return {
+#         "service": "API Backend Python",
+#         "status": "running"
+#     }
 
 
 
